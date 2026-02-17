@@ -10,7 +10,11 @@ import NoteList from "@/components/NoteList/NoteList";
 import Modal from "@/components/Modal/Modal";
 import NoteForm from "@/components/NoteForm/NoteForm";
 
-export default function NotesClient() {
+interface NotesClientProps {
+  tag?: string;
+}
+
+export default function NotesClient({ tag }: NotesClientProps) {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -20,11 +24,12 @@ export default function NotesClient() {
   }, 500);
 
   const { data } = useQuery({
-    queryKey: ["notes", { page }, { search }],
+    queryKey: ["notes", { page }, { search }, tag],
     queryFn: () =>
       fetchNotes({
         page,
         search,
+        tag,
         perPage: 12,
       }),
     refetchOnMount: false,
